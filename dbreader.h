@@ -7,6 +7,8 @@
 #include <functional>
 
 #include <Slave.h>
+#undef max
+#undef min
 #include <DefaultExtState.h>
 #include <nanomysql.h>
 

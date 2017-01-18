@@ -1,6 +1,5 @@
 #include <sstream>
 #include "dbreader.h"
-#include "serializable.h"
 
 using std::placeholders::_1;
 

@@ -15,20 +15,11 @@ class SerializableValue {
 
 	public:
 		template<typename T>
-		inline SerializableValue& operator= (const T& value_) {
-			value = boost::any(value_);
-			return *this;
-		}
-		template<typename T>
 		inline SerializableValue& operator= (T&& value_) {
 			value = boost::any(std::forward<T>(value_));
 			return *this;
 		}
 
-		inline SerializableValue& operator= (const boost::any& value_) {
-			value = value_;
-			return *this;
-		}
 		inline SerializableValue& operator= (boost::any&& value_) {
 			value = std::forward<boost::any>(value_);
 			return *this;
