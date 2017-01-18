@@ -30,7 +30,7 @@ include_directories(
 	"${IMYSQL}/mysql"
 )
 
-find_library(LMYSQL_CLIENT_R mysqlclient_r PATH_SUFFIXES mysql)
+find_library(LMYSQL_CLIENT_R perconaserverclient_r PATH_SUFFIXES mysql)
 find_library(LPTHREAD pthread)
 find_library(LBOOST_SYSTEM_MT boost_system)
 find_library(LBOOST_SERIALIZATION_MT boost_serialization)
