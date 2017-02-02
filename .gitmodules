@@ -1,7 +1,6 @@
 [submodule "lib/tarantool-c"]
 	path = lib/tarantool-c
-	url = https://github.com/deadbabe/tarantool-c.git
-	branch = fix_request_writeout
+	url = https://github.com/tarantool/tarantool-c.git
 [submodule "lib/libslave"]
 	path = lib/libslave
 	url = git@gitlab7.lan:cpp/libslave.git
