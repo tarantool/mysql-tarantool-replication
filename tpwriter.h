@@ -124,10 +124,10 @@ class TPWriter
 		{
 			TableSpace(
 				const uint32_t space_,
-				const std::vector<unsigned> keys_,
-				const std::string insert_call_,
-				const std::string update_call_,
-				const std::string delete_call_
+				const std::vector<unsigned>& keys_,
+				const std::string& insert_call_,
+				const std::string& update_call_,
+				const std::string& delete_call_
 			) :
 				space(space_), keys(keys_),
 				insert_call(insert_call_), update_call(update_call_), delete_call(delete_call_)

@@ -47,10 +47,7 @@ template<typename T> class Queue
 		{
 			std::unique_lock<std::mutex> lock(mutex);
 
-			if (!queue.empty())
-				return queue.size();
-
-			if (cv1.wait_for(lock, timeout, [this] { return !queue.empty(); }))
+			if (!queue.empty() || cv1.wait_for(lock, timeout, [this] { return !queue.empty(); }))
 				return queue.size();
 
 			return 0;

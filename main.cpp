@@ -77,10 +77,7 @@ static void tpwriter_worker()
 
 static bool dbread_callback(SerializableBinlogEventPtr&& ev)
 {
-	if (is_term || reset) {
-		return true;
-	}
-
+	if (is_term || reset) return true;
 	queue.push(std::forward<SerializableBinlogEventPtr>(ev));
 	return false;
 }

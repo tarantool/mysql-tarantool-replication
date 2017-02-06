@@ -178,7 +178,7 @@ void TPWriter::BinlogEventCallback(SerializableBinlogEventPtr&& ev)
 		// sync first
 		RecvAll();
 	} else {
-		prev_key = curnt_key;
+		prev_key = std::move(curnt_key);
 	}
 
 	const std::map<unsigned, SerializableValue>* replace_null_;
