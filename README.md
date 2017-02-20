@@ -27,13 +27,14 @@ Not tested with MySQL 5.7 with new replication protocol improvements.
 
 ### <a name="build-from-source"></a>Build from source
 
-```bash
-git clone https://github.com/tarantool/mysql-tarantool-replication.git mysql_tarantool-replication
-cd mysql-tarantool-replication
-git submodule update --init --recursive
-cmake .
-make
-```
+ ```
+ bash
+ git clone https://github.com/tarantool/mysql-tarantool-replication.git mysql_tarantool-replication
+ cd mysql-tarantool-replication
+ git submodule update --init --recursive
+ cmake .
+ make
+ ```
 
 [Back to contents](#contents)
 
@@ -42,32 +43,27 @@ make
 
 1. Set the `binlog_format` to `ROW`.<br>
 That can be done by editing the MySQL configuration file at `/etc/mysql/my.cnf`:
-
-```
-binlog_format = ROW
-```
+ ```
+ binlog_format = ROW
+ ```
 
 2. Create a user for replication, for example:
-
-```
-CREATE USER <username>@'<host>' IDENTIFIED BY '<password>';
-```
+ ```
+ CREATE USER <username>@'<host>' IDENTIFIED BY '<password>';
+ ```
 
 3. Grant replication privileges to the new user:
-
-```
-GRANT REPLICATION CLIENT ON '<db>'.'<table>' TO <username>@'<domain>';
-GRANT REPLICATION SLAVE ON '<db>'.'<table>' TO <username>@'<domain>';
-GRANT SELECT ON '<db>'.'<table>' TO <username>@'<domain>';
-```
-
+ ```
+ GRANT REPLICATION CLIENT ON '<db>'.'<table>' TO <username>@'<domain>';
+ GRANT REPLICATION SLAVE ON '<db>'.'<table>' TO <username>@'<domain>';
+ GRANT SELECT ON '<db>'.'<table>' TO <username>@'<domain>';
+ ```
 >**Note**: you can use an asterisk (\*) as a wildcard instead of specifying a database and a table.
 
 4. Flush the changes:
-
-```
-FLUSH PRIVILEGES
-```
+ ```
+ FLUSH PRIVILEGES
+ ```
 
 [Back to contents](#contents)
 
