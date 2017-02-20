@@ -1,30 +1,32 @@
-# Mysql slave replication daemon for tarantool
+# MySQL slave replication daemon for Tarantool
 ----------------------------------------------
 Key features:
-* Listens a mysql server as a replication client and translates incomming
-replication events into tarantool space operations.
-* Handles a mapping between mysql tables and tarantool spaces.
+* Listens to a MySQL server as a replication client and translates incoming
+replication events into Tarantool space operations.
+* Handles a mapping between MySQL tables and Tarantool spaces.
 
-Note:
-Mysql binlog should be configured as row-based.
-Will not work with mariadb master.
-Tested with Mysql 5.6 and below.
+>**Note**:
+MySQL binary log should be in the row-based format.
+Will not work with a MariaDB master.
+Tested with MySQL 5.6 and lower.
 Not tested with MySQL 5.7 with new replication protocol improvements.
 
-About Tarantool: http://tarantool.org
+[About Tarantool](http://tarantool.org)
 
-## Content
+## <a name="contents"></a>Contents
 ----------
-* [Compilation and install](#compilation-and-install)
-* [Mysql configuration](#mysql-configuration)
+* [Compilation and installation](#compilation-and-installation)
+* [MySQL configuration](#mysql-configuration)
+  * [Build from source](#build-from-source)
 * [Tarantool configuration](#tarantool-configuration)
-* [Replicator configuration](#replicator configuration)
+* [Replicator configuration](#replicator-configuration)
   * [Mappings](#mappings)
 
-## Compilation and install
+## <a name="compilation-and-installation"></a>Compilation and installation
 --------------------------
 
-### Build from source
+### <a name="build-from-source"></a>Build from source
+
 ```bash
 git clone https://github.com/tarantool/mysql-tarantool-replication.git mysql_tarantool-replication
 cd mysql-tarantool-replication
@@ -33,71 +35,82 @@ cmake .
 make
 ```
 
-[Back to content](#content)
+[Back to contents](#contents)
 
-## Mysql configuraion
+## <a name="mysql-configuration"></a>MySQL configuration
 ---------------------
 
-Set mysql binary log format to row. That can be done with editing mysql
-configuration file (default: /etc/mysql/my.cnf):
-```binlog_format = ROW
+1. Set the `binlog_format` to `ROW`.<br>
+That can be done by editing the MySQL configuration file at `/etc/mysql/my.cnf`:
+
+```
+binlog_format = ROW
 ```
 
-Create user for replication, for example:
-```CREATE USER <username>@'<host>' IDENTIFIED BY '<password>';
+2. Create a user for replication, for example:
+
+```
+CREATE USER <username>@'<host>' IDENTIFIED BY '<password>';
 ```
 
-Grant replication priveleges to new user:
-```GRANT REPLICATION CLIENT ON '<db>'.'<table>' TO <username>@'<domain>';
+3. Grant replication privileges to the new user:
+
+```
+GRANT REPLICATION CLIENT ON '<db>'.'<table>' TO <username>@'<domain>';
 GRANT REPLICATION SLAVE ON '<db>'.'<table>' TO <username>@'<domain>';
 GRANT SELECT ON '<db>'.'<table>' TO <username>@'<domain>';
-
-```
-Note: you can use `*' wildcard instead of db and table specification.
-
-Flush changes:
-```FLUSH PRIVILEGES
 ```
 
-[Back to content](#content)
+>**Note**: you can use an asterisk (\*) as a wildcard instead of specifying a database and a table.
 
-## Tarantool configuration
+4. Flush the changes:
+
+```
+FLUSH PRIVILEGES
+```
+
+[Back to contents](#contents)
+
+## <a name="tarantool-configuration"></a>Tarantool configuration
 --------------------------
 
-Create one space for replication daemon purposes, this space will store
-current replication state. Create more spaces to store replicated data.
+1. Create one space for replication daemon purposes.<br>
+This space will store the current replication state.
 
-Create user for replication daemon and enable read/write operation on
+2. Create more spaces to store replicated data.
+
+3. Create a user for the replication daemon and enable read/write operations on
 target spaces.
 
-[Back to content](#content)
+[Back to contents](#contents)
 
-## Replicator configuration
+## <a name="replicator-configuration"></a>Replicator configuration
 ---------------------------
 
-Setup mysql connection params: host, port, login and password.
+1. Set up MySQL connection parameters: `host`, `port`, `login` and `password`.
 
-Setup tarantool connection options: host, port, login and password.
-Set binlog_pos_space to space id created for replication state and
-binlog_pos_key to identify corresponding tuple in given space.
+2. Set up Tarantool connection options: `host`, `port`, `login` and `password`.
 
-### Mappings
+3. Set `binlog_pos_space` to the space id created for the replication state and
+`binlog_pos_key` to identify the corresponding tuple in a given space.
+
+### <a name="mappings"></a>Mappings
 ------------
 
-Replicator can map mysql tables to one or more tarantool spaces.
-Each mapping item contains database and table name, replicated column list,
-space id (or empty, if space id is same as for previous item) and space
+Replicator can map MySQL tables to one or more Tarantool spaces.
+Each mapping item contains the names of a database and a table, a list of replicated columns,
+a space id (if the space id is the same as for the previous item, it is left blank) and space
 key fields numbers.
-Multiple mysql tables can be mapped into one tarantool space and first
-table in mapping will be primary. In this case each next mapping item adds
-its columns to end of list of replicated column for the space. When
-non-primary table deletes its row then corresponding fields in tuple will
-be reset to null. When a row was inserted into non-primary table then
-corresponding tuple will be updated if exists or inserted, and all fields
-before field mapping will be set to null.
 
-Note: config contains a 'spaces' section. With this section default values
-for tuples can be set, for example for indexed fields.
+Multiple MySQL tables can be mapped to one Tarantool space, and the first
+table in the mapping is primary. In this case, each subsequent mapping item adds
+its columns to the end of the list of replicated columns for the space. When
+a non-primary table deletes its row, the corresponding fields in the tuple are
+reset to `NULL`. When a row is inserted into a non-primary table, the
+corresponding tuple is updated if it already exists or inserted if not, and all the fields
+before the field mapping are set to `NULL`.
 
-[Back to content](#content)
+>**Note**: the configuration file contains a **Spaces** section, where you can set default values
+for tuples - for example, for indexed fields.
 
+[Back to contents](#contents)
