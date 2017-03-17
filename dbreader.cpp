@@ -39,8 +39,9 @@ void DBReader::DumpTables(std::string& binlog_name, unsigned long& binlog_pos, c
 			const auto it = table->filter.find(ptr_field->field_name);
 			if (it != table->filter.end()) {
 				filter_.emplace_back(it->second.first, ptr_field);
+				s_fields += '`';
 				s_fields += ptr_field->field_name;
-				s_fields += ',';
+				s_fields += "`,";
 			}
 		}
 		s_fields.pop_back();
