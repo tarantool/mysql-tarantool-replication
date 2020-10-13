@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/tarantool/mysql-tarantool-replication.svg?branch=master)](https://travis-ci.org/tarantool/mysql-tarantool-replication)
+
 # MySQL slave replication daemon for Tarantool
 ----------------------------------------------
 Key features:

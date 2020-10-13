@@ -1,0 +1,22 @@
+language: cpp
+
+sudo: required
+
+dist: focal
+
+matrix:
+  include:
+    - os: linux
+      dist: bionic
+      compiler: clang
+
+    - os: linux
+      dist: focal
+      compiler: clang
+
+before_script:
+    - sudo -E apt update -y
+    - sudo -E apt install -y libboost-dev
+
+script:
+    - . ./build.sh
